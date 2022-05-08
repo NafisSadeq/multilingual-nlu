@@ -217,6 +217,8 @@ if __name__ == '__main__':
 
             writer.add_scalar('slot_loss_cls/train', train_slot_loss_cls, global_step=step)
             writer.add_scalar('slot_loss_cls/val', val_slot_cls_loss, global_step=step)
+            
+            #print(predict_golden['tag'])
 
             for x in ['intent', 'slot','tag']:
                 precision, recall, F1 = calculateF1(predict_golden[x],x)
