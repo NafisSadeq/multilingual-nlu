@@ -2,37 +2,6 @@ import re
 import torch
 import json
 
-def is_slot_da(da):
-    tag_da = {'Inform', 'Select', 'Recommend', 'NoOffer', 'NoBook', 'OfferBook', 'OfferBooked', 'Book'}
-    not_tag_slot = {'Internet', 'Parking', 'none'}
-    if da[0].split('-')[1] in tag_da and da[1] not in not_tag_slot:
-        return True
-    return False
-
-# def load_slot_freq():
-#     slotFreq={}
-#     with open('multiwoz21/slot_freq.json','r') as file:
-#         slotFreq=json.loads(file.read())
-#     return slotFreq
-
-# def filter_dict(prec,rec,f1):
-
-#     slot_freq=load_slot_freq()
-#     new_prec={}
-#     new_rec={}
-#     new_f1={}
-
-#     for key,value in slot_freq.items():
-
-#         if(value>=200):
-#             new_prec[key]=prec[key]
-#             new_rec[key]=rec[key]
-#             new_f1[key]=f1[key]
-
-
-#     return new_prec,new_rec,new_f1
-
-
 def calculateF1(predict_golden,type):
     TP, FP, FN = 0, 0, 0
     for item in predict_golden:
@@ -240,22 +209,12 @@ def recover_tag(dataloader, intent_logits, tag_logits, tag_mask_tensor, ori_word
     # tag_mask_tensor = [sequence_length]
     # new2ori = {(new_idx:old_idx),...} (after removing [CLS] and [SEP]
     max_seq_len = tag_logits.size(0)
-    #intents = []
-    #for j in range(dataloader.intent_dim):
-    #    if intent_logits[j] > 0:
-    #        intent= dataloader.id2intent[j]
-    #        slot = "none"
-    #        value = "none"
-    #        intents.append([intent, slot, value])
     tags = []
     for j in range(1, max_seq_len-1):
         if tag_mask_tensor[j] == 1:
             value, tag_id = torch.max(tag_logits[j], dim=-1)
             tags.append(dataloader.id2tag[tag_id.item()])
-    #recover_tags = []
-    #for i, tag in enumerate(tags):
-    #    if new2ori[i] >= len(recover_tags):
-    #        recover_tags.append(tag)
+    
     tag_intent = tag2triples(ori_word_seq, tags)
-    #intents += tag_intent
+
     return tag_intent

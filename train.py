@@ -9,7 +9,7 @@ import torch
 from transformers import AdamW, get_linear_schedule_with_warmup
 from dataloader import Dataloader
 from jointBERT import JointBERT
-from postprocess import is_slot_da, calculateF1, recover_intent, recover_slot, recover_tag
+from postprocess import calculateF1, recover_intent, recover_slot, recover_tag
 
 # set random seed
 def set_seed(seed):
@@ -177,13 +177,9 @@ if __name__ == '__main__':
 
                     slot_labels=list(slot_labels)
                     
-                    #print(tag_predicts)
-                    #print(tag_labels)
-                    #exit(0)
-
                     predict_golden['tag'].append({
-                        'predict': [x for x in tag_predicts],
-                        'golden': [x for x in tag_labels]
+                        'predict': tag_predicts,
+                        'golden': tag_labels
                     })
 
                     predict_golden['slot'].append({
