@@ -14,6 +14,7 @@ __pycache__
 .vscode
 
 # data
+amazon-massive-dataset-1.0/*
 corpus/*/log
 corpus/*/output
 
