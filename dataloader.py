@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 import random
-from transformers import BertTokenizer
+from transformers import AutoTokenizer
 import math
 from collections import Counter
 
@@ -24,7 +24,7 @@ class Dataloader:
         self.slot2id = dict([(x, i) for i, x in enumerate(slot_vocab)])
         self.id2tag = dict([(i, x) for i, x in enumerate(tag_vocab)])
         self.tag2id = dict([(x, i) for i, x in enumerate(tag_vocab)])
-        self.tokenizer = BertTokenizer.from_pretrained(pretrained_weights)
+        self.tokenizer = AutoTokenizer.from_pretrained(pretrained_weights)
         self.data = {}
         self.intent_weight = [1] * len(self.intent2id)
 

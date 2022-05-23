@@ -7,7 +7,7 @@ import torch
 from dataloader import Dataloader
 from jointBERT import JointBERT
 from collections import OrderedDict
-from postprocess import is_slot_da, calculateF1, calculateF1perIntent,calculateF1perSlotCLS, calculateF1perSlot, recover_intent, recover_slot, recover_tag
+from postprocess import calculateF1, recover_intent, recover_slot, recover_tag,calculateF1perIntent,calculateF1perSlotCLS,calculateF1perSlot
 
 # set random seed
 def set_seed(seed):
@@ -105,8 +105,8 @@ if __name__ == '__main__':
                 slot_labels=list(slot_labels)
 
                 predict_golden['tag'].append({
-                    'predict': [x for x in tag_predicts if is_slot_da(x)],
-                    'golden': [x for x in tag_labels if is_slot_da(x)]
+                    'predict': tag_predicts,
+                    'golden': tag_labels
                 })
 
                 predict_golden['slot'].append({
@@ -118,6 +118,7 @@ if __name__ == '__main__':
                     'predict': intent_predicts,
                     'golden': intent_labels
                 })
+
         print('[%d|%d] samples' % (len(predict_golden['slot']), len(dataloader.data[data_key])))
 
     total = len(dataloader.data[data_key])
